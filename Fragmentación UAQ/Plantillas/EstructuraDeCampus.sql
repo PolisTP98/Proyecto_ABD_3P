@@ -1,6 +1,6 @@
 /*
 ===================================================================================================================================
-								    PLANTILLA PARA LA FRAGMENTACIÓN HORIZONTAL DE UN CAMPUS
+								    PLANTILLA PARA LA FRAGMENTACIÃ“N HORIZONTAL DE UN CAMPUS
 ===================================================================================================================================
 */
 
@@ -23,7 +23,7 @@ BEGIN
 	);
 END
 
--- (2) Nombre y ubicación de los campus de la Universidad
+-- (2) Nombre y ubicaciÃ³n de los campus de la Universidad
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Campus' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.Campus(
@@ -91,7 +91,7 @@ BEGIN
 	);
 END
 
--- (7) Asignar una o más aulas a un campus
+-- (7) Asignar una o mÃ¡s aulas a un campus
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'AulasPorCampus' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.AulasPorCampus(
@@ -104,7 +104,7 @@ BEGIN
 	);
 END
 
--- (8) Asignar una o más materias a una carrera
+-- (8) Asignar una o mÃ¡s materias a una carrera
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'MateriasPorCarrera' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.MateriasPorCarrera(
@@ -131,7 +131,7 @@ BEGIN
 	);
 END
 
--- (10) Datos académicos del alumno
+-- (10) Datos acadÃ©micos del alumno
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ExpedientesAcademicos' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.ExpedientesAcademicos(
@@ -171,7 +171,7 @@ BEGIN
 	);
 END
 
--- (12) Asignar una o más especialidades a un profesor
+-- (12) Asignar una o mÃ¡s especialidades a un profesor
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'EspecialidadesPorProfesor' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.EspecialidadesPorProfesor(
@@ -184,7 +184,7 @@ BEGIN
 	);
 END
 
--- (13) Asignar uno o más grupos y materias a un profesor
+-- (13) Asignar uno o mÃ¡s grupos y materias a un profesor
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GruposPorProfesor' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.GruposPorProfesor(

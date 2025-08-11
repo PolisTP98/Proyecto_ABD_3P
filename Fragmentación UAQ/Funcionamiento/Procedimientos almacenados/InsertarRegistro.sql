@@ -4,6 +4,7 @@
 ------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarDireccion
 	@Pais NVARCHAR(100),
 	@Estado NVARCHAR(100),
@@ -21,9 +22,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Direcciones';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Pais>, <Estado>, <Municipio>, <Calle>, <Codigo_postal>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Direcciones';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Pais>, <Estado>, <Municipio>, <Calle>, <Codigo_postal>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Pais IS NULL OR TRIM(@Pais) = '' OR @Estado IS NULL OR TRIM(@Estado) = ''
@@ -75,6 +76,7 @@ GO
 ---------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarCampus
 	@Nombre NVARCHAR(100),
 	@Estatus BIT = NULL,
@@ -94,9 +96,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Campus';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Nombre>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Campus';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Nombre>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Nombre IS NULL OR TRIM(@Nombre) = ''
@@ -137,6 +139,7 @@ GO
 -------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarAula
 	@Nombre VARCHAR(50),
 	@Estatus BIT = NULL,
@@ -145,9 +148,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Aulas';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Nombre>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Aulas';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Nombre>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Nombre IS NULL OR TRIM(@Nombre) = ''
@@ -180,6 +183,7 @@ GO
 ---------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarEspecialidad
 	@ID_Campus INT,
 	@Nombre NVARCHAR(100),
@@ -191,9 +195,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Especialidades';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Campus>, <Nombre>, <ID_Modalidad>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Especialidades';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Campus>, <Nombre>, <ID_Modalidad>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Campus IS NULL OR @Nombre IS NULL OR TRIM(@Nombre) = '' OR @ID_Modalidad IS NULL
@@ -238,6 +242,7 @@ GO
 -------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarCarrera
 	@ID_Campus INT,
 	@Clave CHAR(20),
@@ -255,9 +260,9 @@ BEGIN
 	DECLARE @Year_actual SMALLINT = YEAR(GETDATE());
 	DECLARE @Year_maximo SMALLINT = 2100;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Carreras';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Campus>, <Clave>, <Nombre>, <Duracion_semestres>, <Year_vigencia>, <ID_Nivel>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Carreras';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Campus>, <Clave>, <Nombre>, <Duracion_semestres>, <Year_vigencia>, <ID_Nivel>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Campus IS NULL OR @Clave IS NULL OR TRIM(@Clave) = '' OR @Nombre IS NULL OR TRIM(@Nombre) = ''
@@ -266,9 +271,14 @@ BEGIN
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50100, @Modulo = @Modulo, @Detalles = @CamposObligatorios;
 		END
 
-		IF @Year_vigencia NOT BETWEEN @Year_actual AND @Year_maximo
+		IF @Duracion_semestres <= 0
 		BEGIN
-			SET @CampoInvalido = CONCAT('<Year_vigencia> El aÒo de vigencia debe estar en el rango de ', @Year_actual, ' - ', @Year_maximo,  ' (', @Year_vigencia, ')');
+			SET @CampoInvalido = CONCAT('<Duracion_semestres> La duraci√≥n en semestres debe ser mayor o igual a 1 (', @Duracion_semestres, ')');
+			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
+		END
+		ELSE IF @Year_vigencia NOT BETWEEN @Year_actual AND @Year_maximo
+		BEGIN
+			SET @CampoInvalido = CONCAT('<Year_vigencia> El a√±o de vigencia debe estar en el rango de ', @Year_actual, ' - ', @Year_maximo,  ' (', @Year_vigencia, ')');
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
 
@@ -309,6 +319,7 @@ GO
 ----------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarMateria
 	@Clave CHAR(20),
 	@Nombre NVARCHAR(100),
@@ -320,9 +331,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Materias';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Clave>, <Nombre>, <Creditos>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Materias';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Clave>, <Nombre>, <Creditos>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Clave IS NULL OR TRIM(@Clave) = '' OR @Nombre IS NULL OR TRIM(@Nombre) = '' OR @Creditos IS NULL
@@ -332,7 +343,7 @@ BEGIN
 
 		IF @Creditos NOT BETWEEN 1 AND 12
 		BEGIN
-			SET @CampoInvalido = CONCAT('<Creditos> Los crÈditos debe estar en el rango de 1 - 12 (', @Creditos, ')');
+			SET @CampoInvalido = CONCAT('<Creditos> Los cr√©ditos debe estar en el rango de 1 - 12 (', @Creditos, ')');
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
 
@@ -362,6 +373,7 @@ GO
 ----------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarAulaPorCampus
 	@ID_Campus INT,
 	@ID_Aula INT,
@@ -370,9 +382,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'AulasPorCampus';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Campus>, <ID_Aula>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'AulasPorCampus';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Campus>, <ID_Aula>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Campus IS NULL OR @ID_Aula IS NULL
@@ -414,6 +426,7 @@ GO
 --------------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarMateriaPorCarrera
 	@ID_Carrera INT,
 	@ID_Materia INT,
@@ -422,9 +435,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'MateriasPorCarrera';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Carrera>, <ID_Materia>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'MateriasPorCarrera';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Carrera>, <ID_Materia>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Carrera IS NULL OR @ID_Materia IS NULL
@@ -466,6 +479,7 @@ GO
 --------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarGrupo
 	@ID_Carrera INT,
 	@Clave CHAR(20),
@@ -477,9 +491,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Grupos';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Carrera>, <Clave>, <Nombre>, <Semestre_actual>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Grupos';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Carrera>, <Clave>, <Nombre>, <Semestre_actual>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Carrera IS NULL OR @Clave IS NULL OR TRIM(@Clave) = ''
@@ -525,6 +539,7 @@ GO
 ----------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarAlumno
 	@Nombres NVARCHAR(100),
 	@Apellido_paterno NVARCHAR(100),
@@ -552,9 +567,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Alumnos';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Nombres>, <Apellido_paterno>, <Fecha_nacimiento>, <Pais_origen>, <Correo_personal>, <ID_Sexo>, <CURP>, <NSS>, <Telefono>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Alumnos';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Nombres>, <Apellido_paterno>, <Fecha_nacimiento>, <Pais_origen>, <Correo_personal>, <ID_Sexo>, <CURP>, <NSS>, <Telefono>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Nombres IS NULL OR TRIM(@Nombres) = '' OR @Apellido_paterno IS NULL OR TRIM(@Apellido_paterno) = ''
@@ -564,6 +579,12 @@ BEGIN
 		   OR @Telefono IS NULL OR TRIM(@Telefono) = ''
 		BEGIN
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50100, @Modulo = @Modulo, @Detalles = @CamposObligatorios;
+		END
+
+		IF NOT EXISTS (SELECT 1 FROM dbo.Sexos WHERE ID_Sexo = @ID_Sexo)
+		BEGIN
+			SET @CampoInvalido = '<ID_Sexo>';
+			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
 
 		IF EXISTS (SELECT 1 FROM dbo.AlumnosPrivado WHERE CURP = @CURP)
@@ -602,6 +623,7 @@ GO
 -----------------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarExpedienteAcademico
 	@Matricula CHAR(15),
 	@ID_Alumno INT,
@@ -620,9 +642,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'ExpedientesAcademicos';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Matricula>, <ID_Alumno>, <ID_Grupo>, <Periodo>, <Correo_institucional>, <ID_Campus>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'ExpedientesAcademicos';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Matricula>, <ID_Alumno>, <ID_Grupo>, <Periodo>, <Correo_institucional>, <ID_Campus>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Matricula IS NULL OR TRIM(@Matricula) = '' OR @ID_Alumno IS NULL OR @ID_Grupo IS NULL
@@ -646,11 +668,10 @@ BEGIN
 		END
 		ELSE IF @Fecha_baja_academica IS NOT NULL AND @Fecha_baja_academica < @Fecha_ingreso
 		BEGIN
-			SET @CampoInvalido = CONCAT('<Fecha_baja_academica> La fecha de la baja acadÈmica debe ser mayor o igual que la fecha de ingreso (', @Fecha_baja_academica, ')');
+			SET @CampoInvalido = CONCAT('<Fecha_baja_academica> La fecha de la baja acad√©mica debe ser mayor o igual que la fecha de ingreso (', @Fecha_baja_academica, ')');
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
-
-		IF @Promedio_general IS NOT NULL AND @Promedio_general < 0
+		ELSE IF @Promedio_general IS NOT NULL AND @Promedio_general < 0
 		BEGIN
 			SET @CampoInvalido = CONCAT('<Promedio_general> El promedio general debe ser mayor o igual a 0 (', @Promedio_general, ')');
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
@@ -668,14 +689,14 @@ BEGIN
 			SET @CampoInvalido = '<ID_Grupo>';
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
-		ELSE IF NOT EXISTS (SELECT 1 FROM dbo.Campus WHERE ID_Campus = @ID_Campus)
-		BEGIN
-			SET @CampoInvalido = '<ID_Campus>';
-			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
-		END
 		ELSE IF NOT EXISTS (SELECT 1 FROM dbo.EstatusDeAlumnos WHERE ID_EstatusAlumno = @ID_EstatusAlumno)
 		BEGIN
 			SET @CampoInvalido = '<ID_EstatusAlumno>';
+			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
+		END
+		ELSE IF NOT EXISTS (SELECT 1 FROM dbo.Campus WHERE ID_Campus = @ID_Campus)
+		BEGIN
+			SET @CampoInvalido = '<ID_Campus>';
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
 
@@ -705,6 +726,7 @@ GO
 ------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarProfesor
 	@Nombres NVARCHAR(100),
 	@Apellido_paterno NVARCHAR(100),
@@ -740,9 +762,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Profesores';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<Nombres>, <Apellido_paterno>, <Fecha_nacimiento>, <Pais_origen>, <Correo_personal>, <ID_Sexo>, <ID_Campus>, <RFC>, <CURP>, <NSS>, <Telefono>, <Matricula>, <Correo_institucional>, <Salario_quincenal>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Profesores';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<Nombres>, <Apellido_paterno>, <Fecha_nacimiento>, <Pais_origen>, <Correo_personal>, <ID_Sexo>, <ID_Campus>, <RFC>, <CURP>, <NSS>, <Telefono>, <Matricula>, <Correo_institucional>, <Salario_quincenal>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @Nombres IS NULL OR TRIM(@Nombres) = '' OR @Apellido_paterno IS NULL OR TRIM(@Apellido_paterno) = ''
@@ -760,11 +782,10 @@ BEGIN
 
 		IF @Fecha_fin_contrato IS NOT NULL AND @Fecha_fin_contrato < @Fecha_contratacion
 		BEGIN
-			SET @CampoInvalido = CONCAT('<Fecha_fin_contrato> La fecha de fin del contrato debe ser mayor o igual que la fecha de contrataciÛn (', @Fecha_fin_contrato, ')');
+			SET @CampoInvalido = CONCAT('<Fecha_fin_contrato> La fecha de fin del contrato debe ser mayor o igual que la fecha de contrataci√≥n (', @Fecha_fin_contrato, ')');
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
 		END
-
-		IF @Salario_quincenal IS NOT NULL AND @Salario_quincenal < 0
+		ELSE IF @Salario_quincenal IS NOT NULL AND @Salario_quincenal < 0
 		BEGIN
 			SET @CampoInvalido = CONCAT('<Salario_quincenal> El salario quincenal debe ser mayor o igual a 0 (', @Salario_quincenal, ')');
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50600, @Modulo = @Modulo, @Detalles = @CampoInvalido;
@@ -772,7 +793,17 @@ BEGIN
 
 		SET @ID_EstatusProfesor = ISNULL(@ID_EstatusProfesor, 1);
 
-		IF NOT EXISTS (SELECT 1 FROM dbo.EstatusDeProfesores WHERE ID_EstatusProfesor = @ID_EstatusProfesor)
+		IF NOT EXISTS (SELECT 1 FROM dbo.Sexos WHERE ID_Sexo = @ID_Sexo)
+		BEGIN
+			SET @CampoInvalido = '<ID_Sexo>';
+			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
+		END
+		ELSE IF NOT EXISTS (SELECT 1 FROM dbo.Campus WHERE ID_Campus = @ID_Campus)
+		BEGIN
+			SET @CampoInvalido = '<ID_Campus>';
+			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
+		END
+		ELSE IF NOT EXISTS (SELECT 1 FROM dbo.EstatusDeProfesores WHERE ID_EstatusProfesor = @ID_EstatusProfesor)
 		BEGIN
 			SET @CampoInvalido = '<ID_EstatusProfesor>';
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
@@ -817,6 +848,7 @@ GO
 ---------------------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarEspecialidadPorProfesor
 	@ID_Profesor INT,
 	@ID_Especialidad INT,
@@ -825,9 +857,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'EspecialidadesPorProfesor';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Profesor>, <ID_Especialidad>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'EspecialidadesPorProfesor';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Profesor>, <ID_Especialidad>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Profesor IS NULL OR @ID_Especialidad IS NULL
@@ -869,6 +901,7 @@ GO
 --------------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarGrupoPorProfesor
 	@ID_Profesor INT,
 	@ID_Grupo INT,
@@ -882,9 +915,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'GruposPorProfesor';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_Profesor>, <ID_Grupo>, <ID_Materia>, <Hora_inicio>, <Hora_fin>, <ID_Aula>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'GruposPorProfesor';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_Profesor>, <ID_Grupo>, <ID_Materia>, <Hora_inicio>, <Hora_fin>, <ID_Aula>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_Profesor IS NULL OR @ID_Grupo IS NULL OR @ID_Materia IS NULL
@@ -945,6 +978,7 @@ GO
 ---------------------------
 */
 
+GO
 CREATE OR ALTER PROCEDURE dbo.SP_InsertarInscripcion
 	@ID_GrupoProfesor INT,
 	@ID_Expediente INT,
@@ -954,9 +988,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Modulo NVARCHAR(50) = 'Inscripciones';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_GrupoProfesor>, <ID_Expediente>';
-	DECLARE @CampoInvalido NVARCHAR(255);
+	DECLARE @Modulo VARCHAR(50) = 'Inscripciones';
+	DECLARE @CamposObligatorios VARCHAR(255) = '<ID_GrupoProfesor>, <ID_Expediente>';
+	DECLARE @CampoInvalido VARCHAR(255);
 
 	BEGIN TRY
 		IF @ID_GrupoProfesor IS NULL OR @ID_Expediente IS NULL

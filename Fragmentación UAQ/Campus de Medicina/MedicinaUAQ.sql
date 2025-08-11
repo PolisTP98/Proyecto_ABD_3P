@@ -5,10 +5,31 @@ END
 
 USE MedicinaUAQ;
 
--- Crear los cat醠ogos
+-- Crear los cat谩logos
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\EstructuraDeCatalogosGenerales.sql"
 
--- Insertar datos de los cat醠ogos
+-- Insertar datos de los cat谩logos
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\DatosDeCatalogos.sql"
 
 -- Crear la estructura del campus
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\EstructuraDeCampus.sql"
 
 -- Insertar datos del campus
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Funcionamiento\Procedimientos almacenados\InsertarRegistro.sql"
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Funcionamiento\Procedimientos almacenados\MensajesDeError.sql"
+
+-- Errores
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Errores\DatosDeErrores.sql"
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Errores\EstructuraDeErrores.sql"
+
+-- Inf. Alumno Privada
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\EstructuraDeAlumnosPrivada.sql"
+
+-- Inf. Alumno Publica
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\EstructuraDeAlumnosPublica.sql"
+
+-- Inf. Profesor Privada
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\EstructuraDeProfesoresPrivada.sql"
+
+-- Inf. Profesor Publica
+:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentaci贸n UAQ\Plantillas\EstructuraDeProfesoresPublica.sql"

@@ -1100,6 +1100,7 @@ CREATE OR ALTER PROCEDURE dbo.SP_ActualizarProfesor
 	@Correo_institucional NVARCHAR(255) = NULL,
 	@Salario_quincenal DECIMAL(6, 2) = NULL,
 	@ID_EstatusProfesor INT = NULL
+AS
 BEGIN
 	SET NOCOUNT ON;
 

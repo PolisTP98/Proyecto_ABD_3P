@@ -1,4 +1,4 @@
-Create database VistaGlobal;
+create database VistaGlobal;
 GO
 
 Use VistaGlobal;
@@ -23,3 +23,15 @@ GO
 
 PRINT 'Vista VistaGlobalAlumnos creada exitosamente.';
 GO
+
+Use CienciasDeLaComputacionUAQ;
+go 
+select * from Campus;
+
+Use HumanidadesUAQ;
+go 
+select * from ExpedientesAcademicos;
+
+Use MedicinaUAQ;
+go 
+select * from ExpedientesAcademicos;

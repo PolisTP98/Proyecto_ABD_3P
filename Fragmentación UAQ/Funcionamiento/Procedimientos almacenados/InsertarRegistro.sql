@@ -949,41 +949,47 @@ CREATE OR ALTER PROCEDURE dbo.SP_InsertarInscripcion
 	@ID_GrupoProfesor INT,
 	@ID_Expediente INT,
 	@Fecha_inscripcion DATE = NULL,
+	@Periodo VARCHAR(20),
 	@ID_Inscripcion INT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @Modulo NVARCHAR(50) = 'Inscripciones';
-	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_GrupoProfesor>, <ID_Expediente>';
+	DECLARE @CamposObligatorios NVARCHAR(255) = '<ID_GrupoProfesor>, <ID_Expediente>, <Periodo>';
 	DECLARE @CampoInvalido NVARCHAR(255);
 
 	BEGIN TRY
-		IF @ID_GrupoProfesor IS NULL OR @ID_Expediente IS NULL
+		IF @ID_GrupoProfesor IS NULL OR @ID_Expediente IS NULL OR @Periodo IS NULL OR LTRIM(RTRIM(@Periodo)) = ''
 		BEGIN
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50100, @Modulo = @Modulo, @Detalles = @CamposObligatorios;
+			RETURN;
 		END
 
 		IF NOT EXISTS (SELECT 1 FROM dbo.GruposPorProfesor WHERE ID_GrupoProfesor = @ID_GrupoProfesor)
 		BEGIN
 			SET @CampoInvalido = '<ID_GrupoProfesor>';
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
+			RETURN;
 		END
-		ELSE IF NOT EXISTS (SELECT 1 FROM dbo.ExpedientesAcademicos WHERE ID_Expediente = @ID_Expediente)
+
+		IF NOT EXISTS (SELECT 1 FROM dbo.ExpedientesAcademicos WHERE ID_Expediente = @ID_Expediente)
 		BEGIN
 			SET @CampoInvalido = '<ID_Expediente>';
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50500, @Modulo = @Modulo, @Detalles = @CampoInvalido;
+			RETURN;
 		END
 
 		IF EXISTS (SELECT 1 FROM dbo.Inscripciones WHERE ID_GrupoProfesor = @ID_GrupoProfesor AND ID_Expediente = @ID_Expediente)
 		BEGIN
 			EXEC dbo.SP_ErrorPorCodigo @CodigoDeError = 50200, @Modulo = @Modulo;
+			RETURN;
 		END
 
 		SET @Fecha_inscripcion = ISNULL(@Fecha_inscripcion, GETDATE());
 
-		INSERT INTO dbo.Inscripciones(ID_GrupoProfesor, ID_Expediente, Fecha_inscripcion) VALUES
-		(@ID_GrupoProfesor, @ID_Expediente, @Fecha_inscripcion);
+		INSERT INTO dbo.Inscripciones(ID_GrupoProfesor, ID_Expediente, Fecha_inscripcion, Periodo) VALUES
+		(@ID_GrupoProfesor, @ID_Expediente, @Fecha_inscripcion, @Periodo);
 
 		SET @ID_Inscripcion = SCOPE_IDENTITY();
 	END TRY

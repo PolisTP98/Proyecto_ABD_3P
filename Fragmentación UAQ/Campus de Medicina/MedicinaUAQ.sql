@@ -3,6 +3,8 @@ BEGIN
 	CREATE DATABASE MedicinaUAQ;
 END
 
+Drop database MedicinaUAQ;
+
 USE MedicinaUAQ;
 
 -- Crear los catálogos
@@ -19,7 +21,7 @@ USE MedicinaUAQ;
 :r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentación UAQ\Funcionamiento\Procedimientos almacenados\MensajesDeError.sql"
 
 -- Errores
-:r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentación UAQ\Errores\DatosDeErrores.sql"
+:r "C:\Users\ianrd\OneDrive\Documentos\Tareas\Fragmentación UAQ\Errores\DatosDeErrores.sql"
 :r "C:\Users\ianrd\OneDrive\Documentos\BD\Fragmentación UAQ\Errores\EstructuraDeErrores.sql"
 
 -- Inf. Alumno Privada

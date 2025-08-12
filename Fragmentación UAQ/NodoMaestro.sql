@@ -8,7 +8,7 @@ USE NodoMaestroUAQ;
 
 /*
 ===================================================================================================================================
-												1.- TABLAS DINÁMICAS INDEPENDIENTES
+												1.- TABLAS DINÃMICAS INDEPENDIENTES
 ===================================================================================================================================
 */
 
@@ -35,12 +35,12 @@ END
 
 /*
 ===================================================================================================================================
-										 2.- TABLAS ESTÁTICAS TIPO CATÁLOGOS (GENERALES)
+										 2.- TABLAS ESTÃTICAS TIPO CATÃLOGOS (GENERALES)
 ===================================================================================================================================
 */
 
 
--- (1) Sexos válidos de los alumnos/maestros
+-- (1) Sexos vÃ¡lidos de los alumnos/maestros
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Sexos' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.Sexos(
@@ -88,12 +88,12 @@ END
 
 /*
 ===================================================================================================================================
-							    3.- TABLAS ESTÁTICAS TIPO CATÁLOGOS (ESPECÍFICAS DE CADA CAMPUS)
+							    3.- TABLAS ESTÃTICAS TIPO CATÃLOGOS (ESPECÃFICAS DE CADA CAMPUS)
 ===================================================================================================================================
 */
 
 
--- (1) Nombre y ubicación de los campus de la Universidad
+-- (1) Nombre y ubicaciÃ³n de los campus de la Universidad
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Campus' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.Campus(
@@ -164,12 +164,12 @@ END
 
 /*
 ===================================================================================================================================
-													  4.- TABLAS DINÁMICAS
+													  4.- TABLAS DINÃMICAS
 ===================================================================================================================================
 */
 
 
--- (1) Asignar una o más aulas a un campus
+-- (1) Asignar una o mÃ¡s aulas a un campus
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'AulasPorCampus' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.AulasPorCampus(
@@ -182,7 +182,7 @@ BEGIN
 	);
 END
 
--- (2) Asignar una o más materias a una carrera
+-- (2) Asignar una o mÃ¡s materias a una carrera
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'MateriasPorCarrera' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.MateriasPorCarrera(
@@ -239,7 +239,7 @@ BEGIN
 	);
 END
 
--- (6) Datos académicos del alumno
+-- (6) Datos acadÃ©micos del alumno
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ExpedientesAcademicos' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.ExpedientesAcademicos(
@@ -312,7 +312,7 @@ BEGIN
 	);
 END
 
--- (10) Asignar una o más especialidades a un profesor
+-- (10) Asignar una o mÃ¡s especialidades a un profesor
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'EspecialidadesPorProfesor' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.EspecialidadesPorProfesor(
@@ -325,7 +325,7 @@ BEGIN
 	);
 END
 
--- (11) Asignar uno o más grupos y materias a un profesor
+-- (11) Asignar uno o mÃ¡s grupos y materias a un profesor
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GruposPorProfesor' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.GruposPorProfesor(

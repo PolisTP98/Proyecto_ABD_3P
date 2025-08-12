@@ -16,7 +16,7 @@ BEGIN
 
 		IF @Mensaje IS NULL
 		BEGIN
-			THROW 50700, '[Errores] Código de error desconocido.', 1;
+			THROW 50700, '[Errores] CÃ³digo de error desconocido.', 1;
 		END
 
 		SET @Detalles = ISNULL(@Detalles, '');
@@ -28,7 +28,7 @@ BEGIN
 
 	BEGIN CATCH
 		PRINT ERROR_MESSAGE();
-		THROW 50800, '[Errores] Error al lanzar la excepción.', 1;
+		THROW 50800, '[Errores] Error al lanzar la excepciÃ³n.', 1;
 	END CATCH
 END
 GO

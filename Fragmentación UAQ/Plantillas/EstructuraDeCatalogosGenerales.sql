@@ -1,11 +1,11 @@
 /*
 ===================================================================================================================================
-											  PLANTILLA DE LOS CAT¡LOGOS GENERALES
+											  PLANTILLA DE LOS CAT√ÅLOGOS GENERALES
 ===================================================================================================================================
 */
 
 
--- (1) Sexos v·lidos de los alumnos/maestros
+-- (1) Sexos v√°lidos de los alumnos/maestros
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Sexos' AND schema_id = SCHEMA_ID('dbo'))
 BEGIN
 	CREATE TABLE dbo.Sexos(
